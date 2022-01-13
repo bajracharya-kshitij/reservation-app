@@ -3,12 +3,16 @@ package com.kshitij.reservation.service.impl;
 import com.kshitij.reservation.dto.request.TicketCreateRequest;
 import com.kshitij.reservation.dto.request.TicketRequest;
 import com.kshitij.reservation.enums.TicketStatus;
+import com.kshitij.reservation.model.Payment;
 import com.kshitij.reservation.model.Ticket;
 import com.kshitij.reservation.repository.TicketRepository;
 import com.kshitij.reservation.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
@@ -32,8 +36,8 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket getById(Long id) throws Exception {
-        Optional<Ticket> optionalTicket = ticketRepository.findById(id);
+    public Ticket findByTicketNumber(String ticketNumber) throws Exception {
+        Optional<Ticket> optionalTicket = ticketRepository.findByTicketNumber(ticketNumber);
         if(!optionalTicket.isPresent()) {
             throw new Exception("Ticket cannot be found");
         }
@@ -41,8 +45,8 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket update(Long id, TicketRequest request) throws Exception {
-        Ticket ticket = getById(id);
+    public Ticket update(String ticketNumber, TicketRequest request) throws Exception {
+        Ticket ticket = findByTicketNumber(ticketNumber);
         if (!isUpdatable(ticket, request)) {
             throw new Exception(new StringBuilder("Ticket is already ").append(ticket.getStatus().getFormattedName())
                     .append(". Unable to modify.").toString());
@@ -55,13 +59,35 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void delete(Long id) throws Exception {
-        Ticket ticket = getById(id);
+    public void delete(String ticketNumber) throws Exception {
+        Ticket ticket = findByTicketNumber(ticketNumber);
         if (ticket.getStatus().equals(TicketStatus.RESERVED) || ticket.getStatus().equals(TicketStatus.BOOKED)) {
             throw new Exception(new StringBuilder("Ticket is already ").append(ticket.getStatus().getFormattedName())
                     .append(". Unable to delete.").toString());
         }
-        ticketRepository.delete(getById(id));
+        ticketRepository.delete(ticket);
+    }
+
+    @Override
+    public List<Ticket> getTickets(List<String> ticketNumbers) {
+        List<Ticket> tickets = new ArrayList<>();
+        ticketNumbers.forEach(tn -> {
+            try {
+                tickets.add(findByTicketNumber(tn));
+            } catch (Exception e) {
+                System.out.println("One or more tickets couldn't be resolved");
+            }
+        });
+        return tickets;
+    }
+
+    @Override
+    public void book(List<Ticket> tickets, Payment payment) {
+        tickets.forEach(ticket -> {
+            ticket.setStatus(TicketStatus.BOOKED);
+            ticket.setPayment(payment);
+            ticketRepository.save(ticket);
+        });
     }
 
     private boolean isUpdatable(Ticket ticket, TicketRequest request) {

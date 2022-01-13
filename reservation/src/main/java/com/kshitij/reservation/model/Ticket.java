@@ -42,4 +42,8 @@ public class Ticket {
     @Column(name = "status")
     private TicketStatus status;
 
+    @ManyToOne
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
+
 }

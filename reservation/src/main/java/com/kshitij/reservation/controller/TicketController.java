@@ -4,7 +4,6 @@ import com.kshitij.reservation.dto.request.TicketCreateRequest;
 import com.kshitij.reservation.dto.request.TicketRequest;
 import com.kshitij.reservation.dto.response.MessageResponse;
 import com.kshitij.reservation.dto.response.TicketResponse;
-import com.kshitij.reservation.enums.TicketStatus;
 import com.kshitij.reservation.model.Ticket;
 import com.kshitij.reservation.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,28 +22,29 @@ public class TicketController {
     public MessageResponse generate(@Valid @RequestBody TicketCreateRequest request) {
         ticketService.generate(request);
         return MessageResponse.builder()
-                .message(new StringBuilder(Integer.toString(request.getNumberOfTickets())).append(" new tickets " +
-                        "created").toString())
+                .message(new StringBuilder(Integer.toString(request.getNumberOfTickets()))
+                        .append(" new tickets created").toString())
                 .build();
     }
 
-    @GetMapping("/{id}")
-    public TicketResponse get(@PathVariable("id") Long id) throws Exception {
-        Ticket ticket = ticketService.getById(id);
+    @GetMapping("/{ticketNumber}")
+    public TicketResponse get(@PathVariable("ticketNumber") String ticketNumber) throws Exception {
+        Ticket ticket = ticketService.findByTicketNumber(ticketNumber);
         return prepareResponse(ticket);
     }
 
-    @PutMapping("/{id}")
-    public TicketResponse update(@PathVariable("id") Long id, @Valid @RequestBody TicketRequest request) throws Exception {
-        Ticket ticket = ticketService.update(id, request);
+    @PutMapping("/{ticketNumber}")
+    public TicketResponse update(@PathVariable("ticketNumber") String ticketNumber,
+                                 @Valid @RequestBody TicketRequest request) throws Exception {
+        Ticket ticket = ticketService.update(ticketNumber, request);
         return prepareResponse(ticket);
     }
 
-    @DeleteMapping("/{id}")
-    public MessageResponse delete(@PathVariable("id") Long id) throws Exception {
-        ticketService.delete(id);
+    @DeleteMapping("/{ticketNumber}")
+    public MessageResponse delete(@PathVariable("ticketNumber") String ticketNumber) throws Exception {
+        ticketService.delete(ticketNumber);
         return MessageResponse.builder()
-                .message(new StringBuilder("Ticket with id ").append(Long.toString(id)).toString())
+                .message(new StringBuilder("Ticket with id ").append(ticketNumber).toString())
                 .build();
     }
 
