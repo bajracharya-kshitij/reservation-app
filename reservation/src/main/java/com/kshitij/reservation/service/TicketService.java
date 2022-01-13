@@ -11,6 +11,8 @@ public interface TicketService {
 
     void generate(TicketCreateRequest request);
 
+    Long countAvailable();
+
     Ticket findByTicketNumber(String ticketNumber) throws Exception;
 
     Ticket update(String ticketNumber, TicketRequest request) throws Exception;

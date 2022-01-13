@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/ticket")
@@ -25,6 +27,11 @@ public class TicketController {
                 .message(new StringBuilder(Integer.toString(request.getNumberOfTickets()))
                         .append(" new tickets created").toString())
                 .build();
+    }
+
+    @GetMapping("/count")
+    public Long count() {
+        return ticketService.countAvailable();
     }
 
     @GetMapping("/{ticketNumber}")
@@ -50,6 +57,7 @@ public class TicketController {
 
     private TicketResponse prepareResponse(Ticket ticket) {
         return TicketResponse.builder()
+                .ticketNumber(ticket.getTicketNumber())
                 .name(ticket.getName())
                 .email(ticket.getEmail())
                 .contactNumber(ticket.getContactNumber())

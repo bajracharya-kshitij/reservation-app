@@ -10,7 +10,6 @@ import com.kshitij.reservation.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +32,11 @@ public class TicketServiceImpl implements TicketService {
                     .build();
             ticketRepository.save(ticket);
         });
+    }
+
+    @Override
+    public Long countAvailable() {
+        return ticketRepository.countByStatus(TicketStatus.AVAILABLE);
     }
 
     @Override

@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 @Getter
 public class TicketResponse {
 
+    private String ticketNumber;
+
     private String name;
 
     private String email;
