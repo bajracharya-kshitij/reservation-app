@@ -29,9 +29,7 @@ public class EventServiceImpl implements EventService {
                         .location(request.getLocation())
                         .build();
         eventRepository.save(event);
-        request.getTickets().forEach(ticket -> {
-            ticketService.create(ticket, event);
-        });
+        ticketService.create(request.getTickets(), event);
     }
 
     @Override

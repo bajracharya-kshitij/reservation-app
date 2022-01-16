@@ -15,5 +15,5 @@ public class EventCreateRequest {
 
     private String location;
 
-    private List<TicketCreateRequest> tickets;
+    private TicketCreateRequest tickets;
 }

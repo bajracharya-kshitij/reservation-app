@@ -11,7 +11,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 
 @Component
 public class AppInitializer implements ApplicationRunner {
@@ -39,20 +38,15 @@ public class AppInitializer implements ApplicationRunner {
                 .build();
         userService.create(userRequest);
 
-        TicketCreateRequest ticketRequest1 = TicketCreateRequest.builder()
+        TicketCreateRequest ticketRequest = TicketCreateRequest.builder()
                 .numberOfTickets(10)
                 .price(new BigDecimal(100.25))
-                .build();
-
-        TicketCreateRequest ticketRequest2 = TicketCreateRequest.builder()
-                .numberOfTickets(5)
-                .price(new BigDecimal(200.25))
                 .build();
 
         EventCreateRequest eventRequest = EventCreateRequest.builder()
                 .name("Concert")
                 .location("Durbar Marg")
-                .tickets(Arrays.asList(ticketRequest1, ticketRequest2))
+                .tickets(ticketRequest)
                 .build();
 
         eventService.create(eventRequest);
