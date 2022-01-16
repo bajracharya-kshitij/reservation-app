@@ -11,7 +11,8 @@ const Logout = () => {
   }
 
   return (
-    <Button outline color="danger" className="log-out-btn" onClick={ deAuthenticate }>Log Out</Button>
+    <Button className="btn-md btn-danger" style={ { position: 'absolute', right: '30px', marginTop: '10px' } }
+      onClick={ deAuthenticate }>Log Out</Button>
   )
 }
 

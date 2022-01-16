@@ -12,7 +12,6 @@ const Dashboard = () => {
 
   return (
     <>
-      <EventTickets />
       <HotEvents />
       <Button className="btn-lg btn-success" onClick={ createEvent }>Create New Event</Button>
     </>

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 import * as AuthenticationSlice from '../../../redux/auth.slice'
-import { Router } from 'next/router';
+import Router from 'next/router';
 
 const Event = () => {
 
@@ -36,6 +36,7 @@ const Event = () => {
       })
       .then((response) => {
         console.log(response)
+        Router.push('/admin/dashboard')
       })
       .catch((error) => {
         console.error(error)

@@ -57,7 +57,7 @@ const Tickets = () => {
         }
       })
       .then((response) => {
-        Router.push("/user/payment")
+        Router.push(`/user/payment-all/${id}`)
       })
       .catch((error) => {
         console.error(error)
