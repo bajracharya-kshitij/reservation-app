@@ -8,6 +8,8 @@ import com.kshitij.reservation.service.RoleService;
 import com.kshitij.reservation.service.UserService;
 import com.kshitij.reservation.util.PasswordEncoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,5 +40,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User getLoggedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return findByEmail(authentication.getName());
     }
 }

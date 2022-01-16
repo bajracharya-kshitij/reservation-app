@@ -1,14 +1,19 @@
 package com.kshitij.reservation.service.impl;
 
+import com.kshitij.reservation.dto.request.TicketBuyRequest;
 import com.kshitij.reservation.dto.request.TicketCreateRequest;
 import com.kshitij.reservation.dto.request.TicketRequest;
 import com.kshitij.reservation.enums.TicketStatus;
 import com.kshitij.reservation.model.Event;
 import com.kshitij.reservation.model.Payment;
 import com.kshitij.reservation.model.Ticket;
+import com.kshitij.reservation.model.User;
 import com.kshitij.reservation.repository.TicketRepository;
 import com.kshitij.reservation.service.TicketService;
+import com.kshitij.reservation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +24,9 @@ import java.util.stream.IntStream;
 
 @Service
 public class TicketServiceImpl implements TicketService {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private TicketRepository ticketRepository;
@@ -106,6 +114,31 @@ public class TicketServiceImpl implements TicketService {
             ticket.setPayment(payment);
             ticketRepository.save(ticket);
         });
+    }
+
+    @Override
+    public void buy(TicketBuyRequest request, Event event) throws Exception {
+        Long availableCount = ticketRepository.countByEventAndStatus(event, TicketStatus.AVAILABLE);
+        if (request.getNumberOfTickets() > availableCount) {
+            throw new Exception("Request cannot be fulfilled. Not enough tickets available");
+        }
+        User loggedUser = userService.getLoggedUser();
+        Page<Ticket> ticketPage = ticketRepository.findAllByStatus(TicketStatus.AVAILABLE,
+                PageRequest.of(0, request.getNumberOfTickets()));
+        ticketPage.forEach(ticket -> {
+            ticket.setName(request.getName());
+            ticket.setEmail(request.getEmail());
+            ticket.setContactNumber(request.getContactNumber());
+            ticket.setStatus(TicketStatus.getEnumByString(request.getStatus()));
+            ticket.setUser(loggedUser);
+            ticketRepository.save(ticket);
+        });
+    }
+
+    @Override
+    public List<Ticket> listMyTickets() {
+        User loggedUser = userService.getLoggedUser();
+        return ticketRepository.findAllByUser(loggedUser);
     }
 
     private boolean isUpdatable(Ticket ticket, TicketRequest request) {

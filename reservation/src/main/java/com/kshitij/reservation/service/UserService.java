@@ -8,4 +8,6 @@ public interface UserService {
     User create(UserRequest request) throws Exception;
 
     User findByEmail(String email);
+
+    User getLoggedUser();
 }

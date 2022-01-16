@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 @Getter
 public class EventResponse {
 
+    private Long id;
+
     private String name;
 
     private String location;

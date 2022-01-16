@@ -66,6 +66,7 @@ public class EventController {
 
     private EventResponse prepareResponse(Event event) {
         return EventResponse.builder()
+                .id(event.getId())
                 .name(event.getName())
                 .location(event.getLocation())
                 .numberOfTickets(event.getTickets().size())
