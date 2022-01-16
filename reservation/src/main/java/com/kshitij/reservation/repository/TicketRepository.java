@@ -22,4 +22,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     Page<Ticket> findAllByStatus(TicketStatus status, Pageable pageable);
 
     List<Ticket> findAllByUser(User user);
+
+    List<Ticket> findAllByUserAndEventAndStatusNot(User user, Event event, TicketStatus status);
 }

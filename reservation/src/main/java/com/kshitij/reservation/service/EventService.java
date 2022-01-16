@@ -2,7 +2,7 @@ package com.kshitij.reservation.service;
 
 import com.kshitij.reservation.dto.request.EventCreateRequest;
 import com.kshitij.reservation.dto.request.EventRequest;
-import com.kshitij.reservation.dto.request.TicketRequest;
+import com.kshitij.reservation.dto.response.EventPaymentResponse;
 import com.kshitij.reservation.model.Event;
 
 import java.util.List;
@@ -18,4 +18,6 @@ public interface EventService {
     Event update(Long id, EventRequest request) throws Exception;
 
     void delete(Long id) throws Exception;
+
+    EventPaymentResponse getPaymentDetails(Long id) throws Exception;
 }

@@ -2,16 +2,21 @@ package com.kshitij.reservation.service.impl;
 
 import com.kshitij.reservation.dto.request.EventCreateRequest;
 import com.kshitij.reservation.dto.request.EventRequest;
+import com.kshitij.reservation.dto.response.EventPaymentResponse;
 import com.kshitij.reservation.enums.TicketStatus;
 import com.kshitij.reservation.model.Event;
+import com.kshitij.reservation.model.Ticket;
 import com.kshitij.reservation.repository.EventRepository;
 import com.kshitij.reservation.service.EventService;
 import com.kshitij.reservation.service.TicketService;
+import com.kshitij.reservation.util.TicketUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -63,5 +68,18 @@ public class EventServiceImpl implements EventService {
             throw new Exception("One or more ticket already booked/reserved. Unable to delete.");
         }
         eventRepository.delete(event);
+    }
+
+    @Override
+    public EventPaymentResponse getPaymentDetails(Long id) throws Exception {
+        Event event = findById(id);
+        List<Ticket> tickets = ticketService.listAllUnpaidForEvent(event);
+        return EventPaymentResponse.builder()
+                .id(id)
+                .name(event.getName())
+                .ticketNumbers(tickets.stream().map(Ticket::getTicketNumber).collect(Collectors.toList()))
+                .totalTickets(tickets.size())
+                .totalPrice(TicketUtil.getTotalPrice(tickets))
+                .build();
     }
 }

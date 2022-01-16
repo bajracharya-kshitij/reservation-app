@@ -141,6 +141,12 @@ public class TicketServiceImpl implements TicketService {
         return ticketRepository.findAllByUser(loggedUser);
     }
 
+    public List<Ticket> listAllUnpaidForEvent(Event event) {
+        User loggedUser = userService.getLoggedUser();
+        return ticketRepository.findAllByUserAndEventAndStatusNot(
+                loggedUser, event, TicketStatus.BOOKED);
+    }
+
     private boolean isUpdatable(Ticket ticket, TicketRequest request) {
         if (ticket.getStatus().equals(TicketStatus.BOOKED)) {
             return false;

@@ -2,6 +2,7 @@ package com.kshitij.reservation.controller;
 
 import com.kshitij.reservation.dto.request.EventCreateRequest;
 import com.kshitij.reservation.dto.request.EventRequest;
+import com.kshitij.reservation.dto.response.EventPaymentResponse;
 import com.kshitij.reservation.dto.response.EventResponse;
 import com.kshitij.reservation.dto.response.MessageResponse;
 import com.kshitij.reservation.enums.TicketStatus;
@@ -41,10 +42,9 @@ public class EventController {
         return response;
     }
 
-    @GetMapping("/{id}")
-    public EventResponse get(@PathVariable("id") Long id) throws Exception {
-        Event event = eventService.findById(id);
-        return prepareResponse(event);
+    @GetMapping("/{id}/payment")
+    public EventPaymentResponse getPaymentDetails(@PathVariable("id") Long id) throws Exception {
+        return eventService.getPaymentDetails(id);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -62,6 +62,12 @@ public class EventController {
         return MessageResponse.builder()
                 .message(new StringBuilder("Event with id ").append(id).append(" deleted").toString())
                 .build();
+    }
+
+    @GetMapping("/{id}")
+    public EventResponse get(@PathVariable("id") Long id) throws Exception {
+        Event event = eventService.findById(id);
+        return prepareResponse(event);
     }
 
     private EventResponse prepareResponse(Event event) {

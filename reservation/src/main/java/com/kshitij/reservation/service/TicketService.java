@@ -30,4 +30,6 @@ public interface TicketService {
     void buy(TicketBuyRequest request, Event event) throws Exception;
 
     List<Ticket> listMyTickets();
+
+    List<Ticket> listAllUnpaidForEvent(Event event);
 }
