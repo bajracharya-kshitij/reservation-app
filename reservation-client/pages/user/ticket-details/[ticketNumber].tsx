@@ -69,12 +69,12 @@ const TicketDetails = () => {
   }
 
   const goToPayment = () => {
-    Router.push("/user/payment")
+    Router.push(`/user/payment-single/${ticketNumber}`)
   }
 
   return (
     <div>
-      <h2 className="p-b-20">Update Ticket #{ ticketNumber } for { event }</h2>
+      <h2 className="p-b-20">{ status !== 'Booked' ? 'Update ' : 'Details of ' } Ticket #{ ticketNumber } for { event }</h2>
       <Form onSubmit={ submitForm }>
         <Row>
           <Col>
@@ -113,14 +113,18 @@ const TicketDetails = () => {
           </Col>
         </Row>
 
-        {
-          !disabled &&
+        { status !== 'Booked' &&
           <>
-            <Button className="btn-md btn-success m-r-10" onClick={ () => setStatus('Saved') } type="submit">Save</Button>
-            <Button className="btn-md btn-danger m-r-10" onClick={ () => setStatus('Reserved') } type="submit">Reserve</Button>
+            {
+              !disabled &&
+              <>
+                <Button className="btn-md btn-save m-r-10" onClick={ () => setStatus('Saved') } type="submit">Save</Button>
+                <Button className="btn-md btn-danger m-r-10" onClick={ () => setStatus('Reserved') } type="submit">Reserve</Button>
+              </>
+            }
+            <Button className="btn-md btn-success" onClick={ goToPayment }>Proceed To Payment</Button>
           </>
         }
-        <Button className="btn-md btn-success" onClick={ goToPayment }>Proceed To Payment</Button>
       </Form>
     </div>
   )

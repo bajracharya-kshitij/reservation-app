@@ -853,6 +853,12 @@ input {
   cursor: auto;
 }
 
+.btn-save {
+  background-color: #5564ec;
+  border-color: #5564ec;
+  cursor: auto;
+}
+
 .link {
   margin-bottom: 20px;
   pointer-events: painted;
