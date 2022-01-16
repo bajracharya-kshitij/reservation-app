@@ -47,7 +47,7 @@ public class AuthController {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
         LOG.debug("<<< Successfully logged in user");
-        return new JwtResponse(jwt, userPrincipal.getName(), userPrincipal.getUsername(),
+        return new JwtResponse(jwt, userPrincipal.getName(), userPrincipal.getEmail(),
                 userPrincipal.getAuthorities().stream().collect(Collectors.toList()));
     }
 }

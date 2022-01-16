@@ -20,7 +20,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] AUTH_WHITELIST = {
-            "/", "/login", "/api/auth/login", "/register", "/api/auth/register", "/logout", "/h2-console/**"
+            "/", "/api/auth/login", "/api/auth/register", "/logout", "/h2-console/**"
     };
 
     @Autowired
@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().logout()
                 .logoutSuccessUrl("/")
                 .permitAll().logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
-                .logoutSuccessUrl("/login");
+                .logoutSuccessUrl("/");
         // for h2 console
         http.headers().frameOptions().disable();
     }

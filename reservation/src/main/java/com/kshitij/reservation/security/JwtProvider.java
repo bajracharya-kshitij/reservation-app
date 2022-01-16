@@ -1,5 +1,6 @@
 package com.kshitij.reservation.security;
 
+import com.kshitij.reservation.util.DateUtil;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +15,6 @@ public class JwtProvider {
 
     private static final Logger LOG = LoggerFactory.getLogger(JwtProvider.class);
 
-    public static final int NO_OF_MILLISECONDS_IN_A_SECOND = 1000;
-
     @Value("${reservation.jwtSecret}")
     private String jwtSecret;
 
@@ -28,7 +27,7 @@ public class JwtProvider {
 
         return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime()
-                        + jwtExpiration * NO_OF_MILLISECONDS_IN_A_SECOND))
+                        + jwtExpiration * DateUtil.NO_OF_MILLISECONDS_IN_A_SECOND))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
     }
 

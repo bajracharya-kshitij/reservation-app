@@ -1,13 +1,13 @@
 package com.kshitij.reservation.security;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import com.kshitij.reservation.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class UserPrincipal implements UserDetails {
 
@@ -38,11 +38,6 @@ public class UserPrincipal implements UserDetails {
         return new UserPrincipal(user.getId(), user.getName(), user.getEmail(), user.getPassword(), authorities);
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
-    }
-
     public Long getId() {
         return this.id;
     }
@@ -51,33 +46,42 @@ public class UserPrincipal implements UserDetails {
         return this.name;
     }
 
-    @Override
-    public String getPassword() {
-        return this.password;
+    public String getEmail() {
+        return email;
     }
 
     @Override
     public String getUsername() {
-        return this.email;
+        return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
