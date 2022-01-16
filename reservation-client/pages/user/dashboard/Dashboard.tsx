@@ -1,10 +1,14 @@
 import React from 'react'
 
+import HotEvents from '../../../components/hot-events'
+import MyTickets from '../../../components/my-tickets'
+
 const Dashboard = () => {
   return (
-    <div>
-      User Dashboard
-    </div>
+    <>
+      <MyTickets />
+      <HotEvents />
+    </>
   )
 }
 
