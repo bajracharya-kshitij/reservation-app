@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Col, Form, Input, Row } from 'reactstrap';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
@@ -16,11 +16,28 @@ const Tickets = () => {
   const [contactNumber, setContactNumber] = useState('')
   const [numberOfTickets, setNumberOfTickets] = useState()
   const [status, setStatus] = useState('')
+  const [eventName, setEventName] = useState('')
 
   const token: string | null = useSelector(AuthenticationSlice.getToken)
 
   const router = useRouter()
   const { id } = router.query
+
+  useEffect(() => {
+    axios.get(`/api/event/${id}`,
+      {
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((response) => {
+        setEventName(response.data.name)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }, [])
 
   const submitForm = (e: any) => {
     e.preventDefault();
@@ -50,7 +67,7 @@ const Tickets = () => {
   return (
 
     <div>
-      <h2 className="p-b-20">Buy Tickets</h2>
+      <h2 className="p-b-20">Buy Tickets for { eventName }</h2>
       <Form onSubmit={ submitForm }>
         <Row>
           <Col>
@@ -96,7 +113,7 @@ const Tickets = () => {
           </Col>
         </Row>
 
-        <Button className="btn-md btn-success" onClick={ () => setStatus('Saved') } type="submit">Save</Button>
+        <Button className="btn-md btn-success m-r-10" onClick={ () => setStatus('Saved') } type="submit">Save</Button>
         <Button className="btn-md btn-danger" onClick={ () => setStatus('Reserved') } type="submit">Reserve</Button>
       </Form>
     </div>

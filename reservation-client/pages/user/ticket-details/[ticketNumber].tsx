@@ -16,6 +16,7 @@ const TicketDetails = () => {
   const [contactNumber, setContactNumber] = useState('')
   const [status, setStatus] = useState('')
   const [disabled, setDisabled] = useState(false)
+  const [event, setEvent] = useState('')
 
   const router = useRouter()
   const { ticketNumber } = router.query
@@ -36,6 +37,7 @@ const TicketDetails = () => {
         setContactNumber(response.data.contactNumber)
         setStatus(response.data.status)
         setDisabled(response.data.status !== 'Saved')
+        setEvent(response.data.event)
       })
       .catch((error) => {
         console.error(error)
@@ -72,7 +74,7 @@ const TicketDetails = () => {
 
   return (
     <div>
-      <h2 className="p-b-20">Update Ticket</h2>
+      <h2 className="p-b-20">Update Ticket #{ ticketNumber } for { event }</h2>
       <Form onSubmit={ submitForm }>
         <Row>
           <Col>
@@ -112,14 +114,13 @@ const TicketDetails = () => {
         </Row>
 
         {
-          disabled ?
-            <Button className="btn-md btn-success" onClick={ goToPayment }>Proceed To Payment</Button>
-            :
-            <>
-              <Button className="btn-md btn-success" onClick={ () => setStatus('Saved') } type="submit">Save</Button>
-              <Button className="btn-md btn-danger" onClick={ () => setStatus('Reserved') } type="submit">Reserve</Button>
-            </>
+          !disabled &&
+          <>
+            <Button className="btn-md btn-success m-r-10" onClick={ () => setStatus('Saved') } type="submit">Save</Button>
+            <Button className="btn-md btn-danger m-r-10" onClick={ () => setStatus('Reserved') } type="submit">Reserve</Button>
+          </>
         }
+        <Button className="btn-md btn-success" onClick={ goToPayment }>Proceed To Payment</Button>
       </Form>
     </div>
   )

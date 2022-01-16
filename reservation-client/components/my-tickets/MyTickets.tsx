@@ -41,21 +41,29 @@ const MyTickets = () => {
     <div className="p-t-30 p-b-30">
       <h2 className="p-t-10 p-b-10">My Tickets</h2>
 
-      <Container fluid>
-        <Row>
-          { tickets.map((ticket, index) => {
-            return <Col key={ `card-${index}` }>
-              <div className="event-card p-l-50 p-r-50 p-t-50 p-b-50" style={ { cursor: 'pointer' } }
-                onClick={ () => clickOnTicket(ticket.ticketNumber) }
-              >
-                <div className="p-b-20">Ticket #{ ticket.ticketNumber }</div>
-                <div className="p-t-20">{ ticket.status }</div>
-              </div>
-            </Col>
-          })
-          }
+      { tickets.length > 0 ?
+
+        <Container fluid>
+          <Row>
+            { tickets.map((ticket, index) => {
+              return <Col key={ `card-${index}` } style={ { paddingBottom: '20px' } }>
+                <div className="event-card p-l-50 p-r-50 p-t-50 p-b-50" style={ { cursor: 'pointer' } }
+                  onClick={ () => clickOnTicket(ticket.ticketNumber) }
+                >
+                  <div className="p-b-20">Ticket #{ ticket.ticketNumber }</div>
+                  <div className="p-t-20">{ ticket.status }</div>
+                </div>
+              </Col>
+            })
+            }
+          </Row>
+        </Container>
+        : <Row>
+          <Col>
+            <p style={ { fontSize: '20px' } }>No active tickets. If you, save/reserve/buy tickets, they will appear here.</p>
+          </Col>
         </Row>
-      </Container>
+      }
 
     </div>
   )
