@@ -9,20 +9,13 @@ import { faEnvelope, faKeyboard, faPhone } from '@fortawesome/free-solid-svg-ico
 
 import * as AuthenticationSlice from '../../../redux/auth.slice'
 
-interface ITicketDetails {
-  ticketNumber: string,
-  name: string,
-  email: string,
-  contactNumber: string,
-  status: string,
-}
-
 const TicketDetails = () => {
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [contactNumber, setContactNumber] = useState('')
   const [status, setStatus] = useState('')
+  const [disabled, setDisabled] = useState(false)
 
   const router = useRouter()
   const { ticketNumber } = router.query
@@ -42,6 +35,7 @@ const TicketDetails = () => {
         setEmail(response.data.email)
         setContactNumber(response.data.contactNumber)
         setStatus(response.data.status)
+        setDisabled(response.data.status !== 'Saved')
       })
       .catch((error) => {
         console.error(error)
@@ -72,6 +66,10 @@ const TicketDetails = () => {
       })
   }
 
+  const goToPayment = () => {
+    Router.push("/user/payment")
+  }
+
   return (
     <div>
       <h2 className="p-b-20">Update Ticket</h2>
@@ -79,7 +77,8 @@ const TicketDetails = () => {
         <Row>
           <Col>
             <div className="wrap-input100  m-b-16">
-              <Input type="text" className="input100" placeholder="Name" onChange={ (e) => setName(e.target.value) } value={ name } />
+              <Input type="text" className="input100" placeholder="Name" onChange={ (e) => setName(e.target.value) } value={ name }
+                disabled={ disabled } />
               <span className="focus-input100"></span>
               <span className="symbol-input100">
                 <span className="lnr lnr-keyboard">
@@ -89,7 +88,8 @@ const TicketDetails = () => {
             </div>
 
             <div className="wrap-input100  m-b-16">
-              <Input type="email" className="input100" placeholder="Email" onChange={ (e) => setEmail(e.target.value) } value={ email } />
+              <Input type="email" className="input100" placeholder="Email" onChange={ (e) => setEmail(e.target.value) } value={ email }
+                disabled={ disabled } />
               <span className="focus-input100"></span>
               <span className="symbol-input100">
                 <span className="lnr lnr-keyboard">
@@ -99,7 +99,8 @@ const TicketDetails = () => {
             </div>
 
             <div className="wrap-input100  m-b-16">
-              <Input type="text" className="input100" placeholder="Contact Number" onChange={ (e) => setContactNumber(e.target.value) } value={ contactNumber } />
+              <Input type="text" className="input100" placeholder="Contact Number" onChange={ (e) => setContactNumber(e.target.value) } value={ contactNumber }
+                disabled={ disabled } />
               <span className="focus-input100"></span>
               <span className="symbol-input100">
                 <span className="lnr lnr-keyboard">
@@ -111,10 +112,14 @@ const TicketDetails = () => {
         </Row>
 
         {
-          status === 'Saved' &&
-          <Button className="btn-md btn-success" onClick={ () => setStatus('Saved') } type="submit">Save</Button>
+          disabled ?
+            <Button className="btn-md btn-success" onClick={ goToPayment }>Proceed To Payment</Button>
+            :
+            <>
+              <Button className="btn-md btn-success" onClick={ () => setStatus('Saved') } type="submit">Save</Button>
+              <Button className="btn-md btn-danger" onClick={ () => setStatus('Reserved') } type="submit">Reserve</Button>
+            </>
         }
-        <Button className="btn-md btn-danger" onClick={ () => setStatus('Reserved') } type="submit">Reserve</Button>
       </Form>
     </div>
   )
