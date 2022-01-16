@@ -15,10 +15,12 @@ public class EventResponse {
 
     private String location;
 
-    private int numberOfTickets;
+    private long numberOfTickets;
 
-    private int numberOfTicketsSold;
+    private long numberOfTicketsSold;
 
-    private int numberOfTicketsAvailable;
+    private long numberOfTicketsReserved;
+
+    private long numberOfTicketsAvailable;
 
 }

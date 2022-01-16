@@ -10,6 +10,7 @@ import com.kshitij.reservation.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +32,11 @@ public class EventServiceImpl implements EventService {
         request.getTickets().forEach(ticket -> {
             ticketService.create(ticket, event);
         });
+    }
+
+    @Override
+    public List<Event> list() {
+        return eventRepository.findAll();
     }
 
     @Override

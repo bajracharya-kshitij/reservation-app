@@ -5,9 +5,13 @@ import com.kshitij.reservation.dto.request.EventRequest;
 import com.kshitij.reservation.dto.request.TicketRequest;
 import com.kshitij.reservation.model.Event;
 
+import java.util.List;
+
 public interface EventService {
 
     void create(EventCreateRequest request);
+
+    List<Event> list();
 
     Event findById(Long id) throws Exception;
 

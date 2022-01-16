@@ -4,6 +4,7 @@ import com.kshitij.reservation.dto.request.EventCreateRequest;
 import com.kshitij.reservation.dto.request.EventRequest;
 import com.kshitij.reservation.dto.response.EventResponse;
 import com.kshitij.reservation.dto.response.MessageResponse;
+import com.kshitij.reservation.enums.TicketStatus;
 import com.kshitij.reservation.model.Event;
 import com.kshitij.reservation.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/event")
@@ -26,6 +29,16 @@ public class EventController {
         return MessageResponse.builder()
                 .message(new StringBuilder("Event ").append(request.getName()).append(" created").toString())
                 .build();
+    }
+
+    @GetMapping("/")
+    public List<EventResponse> list() {
+        List<EventResponse> response = new ArrayList<>();
+        List<Event> events = eventService.list();
+        events.forEach(event -> {
+            response.add(prepareResponse(event));
+        });
+        return response;
     }
 
     @GetMapping("/{id}")
@@ -56,8 +69,12 @@ public class EventController {
                 .name(event.getName())
                 .location(event.getLocation())
                 .numberOfTickets(event.getTickets().size())
-                .numberOfTicketsSold(event.getTickets().size())
-                .numberOfTicketsAvailable(event.getTickets().size())
+                .numberOfTicketsSold(event.getTickets().stream()
+                        .filter(t -> t.getStatus().equals(TicketStatus.BOOKED)).count())
+                .numberOfTicketsReserved(event.getTickets().stream()
+                        .filter(t -> t.getStatus().equals(TicketStatus.RESERVED)).count())
+                .numberOfTicketsAvailable(event.getTickets().stream()
+                        .filter(t -> t.getStatus().equals(TicketStatus.AVAILABLE)).count())
                 .build();
     }
 }
