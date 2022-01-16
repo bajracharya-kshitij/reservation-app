@@ -1,6 +1,5 @@
 package com.kshitij.reservation.model;
 
-import com.kshitij.reservation.enums.PaymentMode;
 import com.kshitij.reservation.enums.PaymentStatus;
 import lombok.*;
 
@@ -22,10 +21,6 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "mode")
-    private PaymentMode mode;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

@@ -1,7 +1,6 @@
 package com.kshitij.reservation.service.impl;
 
 import com.kshitij.reservation.dto.request.PaymentRequest;
-import com.kshitij.reservation.enums.PaymentMode;
 import com.kshitij.reservation.enums.PaymentStatus;
 import com.kshitij.reservation.model.Payment;
 import com.kshitij.reservation.model.Ticket;
@@ -28,7 +27,6 @@ public class PaymentServiceImpl implements PaymentService {
     public void pay(PaymentRequest request) {
         List<Ticket> tickets = ticketService.getTickets(request.getTicketNumbers());
         Payment payment = Payment.builder()
-                .mode(PaymentMode.getEnumByString(request.getMode()))
                 .status(PaymentStatus.PAID)
                 .totalPrice(TicketUtil.getTotalPrice(tickets))
                 .tickets(new HashSet<>(tickets))

@@ -14,5 +14,4 @@ public class PaymentRequest {
 
     List<String> ticketNumbers = new ArrayList<String>();
 
-    String mode;
 }
