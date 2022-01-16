@@ -1,36 +1,61 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Col, Form, Input, Row } from 'reactstrap';
+import { useRouter } from 'next/router'
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router'
+import Router from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faKeyboard, faPhone } from '@fortawesome/free-solid-svg-icons'
-import Router from 'next/router';
 
 import * as AuthenticationSlice from '../../../redux/auth.slice'
 
-const Tickets = () => {
+interface ITicketDetails {
+  ticketNumber: string,
+  name: string,
+  email: string,
+  contactNumber: string,
+  status: string,
+}
+
+const TicketDetails = () => {
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [contactNumber, setContactNumber] = useState('')
-  const [numberOfTickets, setNumberOfTickets] = useState()
   const [status, setStatus] = useState('')
+
+  const router = useRouter()
+  const { ticketNumber } = router.query
 
   const token: string | null = useSelector(AuthenticationSlice.getToken)
 
-  const router = useRouter()
-  const { id } = router.query
+  useEffect(() => {
+    axios.get(`/api/ticket/${ticketNumber}`,
+      {
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((response) => {
+        setName(response.data.name)
+        setEmail(response.data.email)
+        setContactNumber(response.data.contactNumber)
+        setStatus(response.data.status)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }, [])
 
   const submitForm = (e: any) => {
     e.preventDefault();
-    axios.post(`/api/ticket/buy`,
+    axios.put(`/api/ticket/${ticketNumber}`,
       {
-        eventId: id,
+        ticketNumber: ticketNumber,
         name: name,
         email: email,
         contactNumber: contactNumber,
-        numberOfTickets: numberOfTickets,
         status: status
       },
       {
@@ -40,7 +65,7 @@ const Tickets = () => {
         }
       })
       .then((response) => {
-        Router.push("/user/payment")
+        Router.push("/user/dashboard")
       })
       .catch((error) => {
         console.error(error)
@@ -48,9 +73,8 @@ const Tickets = () => {
   }
 
   return (
-
     <div>
-      <h2 className="p-b-20">Buy Tickets</h2>
+      <h2 className="p-b-20">Update Ticket</h2>
       <Form onSubmit={ submitForm }>
         <Row>
           <Col>
@@ -83,24 +107,17 @@ const Tickets = () => {
                 </span>
               </span>
             </div>
-
-            <div className="wrap-input100  m-b-16">
-              <Input type="text" className="input100" placeholder="Number of Tickets" onChange={ (e) => setNumberOfTickets(e.target.value) } value={ numberOfTickets } />
-              <span className="focus-input100"></span>
-              <span className="symbol-input100">
-                <span className="lnr lnr-keyboard">
-                  <FontAwesomeIcon icon={ faKeyboard } />
-                </span>
-              </span>
-            </div>
           </Col>
         </Row>
 
-        <Button className="btn-md btn-success" onClick={ () => setStatus('Saved') } type="submit">Save</Button>
+        {
+          status === 'Saved' &&
+          <Button className="btn-md btn-success" onClick={ () => setStatus('Saved') } type="submit">Save</Button>
+        }
         <Button className="btn-md btn-danger" onClick={ () => setStatus('Reserved') } type="submit">Reserve</Button>
       </Form>
     </div>
   )
 }
 
-export default Tickets
+export default TicketDetails

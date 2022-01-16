@@ -627,37 +627,10 @@ iframe {
   background: #fff;
 }
 
-.search-warp {
-  height: calc(100vh - 160px);
-}
-
-.search-warp .jumbotron {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  border-radius: 0px;
-  background: transparent;
-  padding: 0px;
-  margin: 0px;
-}
-
-.search-warp h2 {
-  color: #2a2b30;
-}
-
-.search-warp .btn-success {
-  height: 62px;
-  padding: 10px 30px;
-}
-
 .img-responsive {
   max-width: 100%;
 }
 
-.result-warp table tr,
-.result-warp table td {
-  padding: 10px;
-}
 /* The Modal (background) */
 
 .modal {
@@ -871,6 +844,12 @@ input {
 .btn-success {
   background-color: #28a745;
   border-color: #28a745;
+  cursor: auto;
+}
+
+.btn-danger {
+  background-color: #9b3f1b;
+  border-color: #9b3f1b;
   cursor: auto;
 }
 
