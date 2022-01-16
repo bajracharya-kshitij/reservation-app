@@ -1,21 +1,21 @@
 **Stack used:**
 
-Java 8
-Spring Boot
-Embedded H2 Database
-NextJS
+- Java 8
+- Spring Boot
+- Embedded H2 Database
+- NextJS
 
 **Credentails:**
 
 Admin:
 
-email: admin@email.com
-password: admin123
+- email: admin@email.com
+- password: admin123
 
 User:
 
-email: user@email.com
-password: user123
+- email: user@email.com
+- password: user123
 
 
 **Workflow**:
