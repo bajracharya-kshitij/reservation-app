@@ -49,7 +49,7 @@ public class TicketController {
     public MessageResponse delete(@PathVariable("ticketNumber") String ticketNumber) throws Exception {
         ticketService.delete(ticketNumber);
         return MessageResponse.builder()
-                .message(new StringBuilder("Ticket with id ").append(ticketNumber).toString())
+                .message(new StringBuilder("Ticket with id ").append(ticketNumber).append(" deleted").toString())
                 .build();
     }
 

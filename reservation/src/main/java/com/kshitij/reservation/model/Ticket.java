@@ -43,6 +43,14 @@ public class Ticket {
     private TicketStatus status;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "event_id")
+    private Event event;
+
+    @ManyToOne
     @JoinColumn(name = "payment_id")
     private Payment payment;
 

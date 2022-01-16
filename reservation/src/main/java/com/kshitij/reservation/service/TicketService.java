@@ -2,6 +2,7 @@ package com.kshitij.reservation.service;
 
 import com.kshitij.reservation.dto.request.TicketCreateRequest;
 import com.kshitij.reservation.dto.request.TicketRequest;
+import com.kshitij.reservation.model.Event;
 import com.kshitij.reservation.model.Payment;
 import com.kshitij.reservation.model.Ticket;
 
@@ -10,6 +11,8 @@ import java.util.List;
 public interface TicketService {
 
     void generate(TicketCreateRequest request);
+
+    void create(TicketCreateRequest request, Event event);
 
     Long countAvailable();
 

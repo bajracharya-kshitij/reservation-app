@@ -3,6 +3,7 @@ package com.kshitij.reservation.service.impl;
 import com.kshitij.reservation.dto.request.TicketCreateRequest;
 import com.kshitij.reservation.dto.request.TicketRequest;
 import com.kshitij.reservation.enums.TicketStatus;
+import com.kshitij.reservation.model.Event;
 import com.kshitij.reservation.model.Payment;
 import com.kshitij.reservation.model.Ticket;
 import com.kshitij.reservation.repository.TicketRepository;
@@ -29,6 +30,19 @@ public class TicketServiceImpl implements TicketService {
                     .ticketNumber(UUID.randomUUID().toString())
                     .price(request.getPrice())
                     .status(TicketStatus.AVAILABLE)
+                    .build();
+            ticketRepository.save(ticket);
+        });
+    }
+
+    @Override
+    public void create(TicketCreateRequest request, Event event) {
+        IntStream.range(0, request.getNumberOfTickets()).forEach(n -> {
+            Ticket ticket = Ticket.builder()
+                    .ticketNumber(UUID.randomUUID().toString())
+                    .price(request.getPrice())
+                    .status(TicketStatus.AVAILABLE)
+                    .event(event)
                     .build();
             ticketRepository.save(ticket);
         });
