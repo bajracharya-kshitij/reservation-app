@@ -23,4 +23,6 @@ public class TicketResponse {
 
     private String status;
 
+    private String event;
+
 }

@@ -88,6 +88,7 @@ public class TicketController {
                 .contactNumber(ticket.getContactNumber())
                 .price(ticket.getPrice())
                 .status(ticket.getStatus().getFormattedName())
+                .event(ticket.getEvent().getName())
                 .build();
     }
 }
