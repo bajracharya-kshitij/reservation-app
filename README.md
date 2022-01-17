@@ -5,6 +5,16 @@
 - Embedded H2 Database
 - NextJS
 
+**To run backend:**
+- `mvn spring-boot:run`
+- Server will be running at http://localhost:8080
+
+**To run frontend:**
+- `npm install`
+- `npm run dev`
+- Client will be running at http://localhost:3000
+
+
 **Credentails:**
 
 Admin:
