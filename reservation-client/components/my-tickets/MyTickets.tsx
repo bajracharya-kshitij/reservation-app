@@ -44,9 +44,9 @@ const MyTickets = () => {
       { tickets.length > 0 ?
 
         <Container fluid>
-          <Row>
+          <Row style={ { display: 'flex', margin: '0 -15px', flexWrap: 'wrap' } }>
             { tickets.map((ticket, index) => {
-              return <Col key={ `card-${index}` } style={ { paddingBottom: '20px' } }>
+              return <Col key={ `card-${index}` } style={ { margin: "15px" } }>
                 <div className="event-card p-l-50 p-r-50 p-t-50 p-b-50" style={ { cursor: 'pointer' } }
                   onClick={ () => clickOnTicket(ticket.ticketNumber) }
                 >

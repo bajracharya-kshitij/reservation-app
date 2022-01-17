@@ -49,9 +49,9 @@ const HotEvents = () => {
       <h2 className="p-t-10 p-b-10">Hot Events</h2>
 
       <Container fluid>
-        <Row>
+        <Row style={ { display: 'flex', margin: '0 -15px', flexWrap: 'wrap' } }>
           { events.map((event, index) => {
-            return <Col key={ `card-${index}` }>
+            return <Col key={ `card-${index}` } style={ { margin: "15px" } }>
               <div className="event-card p-l-50 p-r-50 p-t-50 p-b-50" style={ { cursor: 'pointer' } }
                 onClick={ () => clickOnEvent(event.id) }>
                 <div className="p-b-20">{ event.name }</div>
