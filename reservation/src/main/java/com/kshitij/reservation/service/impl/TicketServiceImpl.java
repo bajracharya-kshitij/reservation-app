@@ -123,7 +123,7 @@ public class TicketServiceImpl implements TicketService {
             throw new Exception("Request cannot be fulfilled. Not enough tickets available");
         }
         User loggedUser = userService.getLoggedUser();
-        Page<Ticket> ticketPage = ticketRepository.findAllByStatus(TicketStatus.AVAILABLE,
+        Page<Ticket> ticketPage = ticketRepository.findAllByEventAndStatus(event, TicketStatus.AVAILABLE,
                 PageRequest.of(0, request.getNumberOfTickets()));
         ticketPage.forEach(ticket -> {
             ticket.setName(request.getName());
